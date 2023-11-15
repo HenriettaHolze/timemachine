@@ -28,7 +28,8 @@ args = parser.parse_args()
 experimentDirectory = os.getcwd()
 
 #Make directory for output files.
-outFileDirectory = os.path.join(experimentDirectory, "analyzed", args.sampleName, 'extractedBarcodeData') 
+outFileDirectory = os.path.join(experimentDirectory, args.outFilePrefix, "extractedBarcodeData")
+
 if not os.path.exists(outFileDirectory):
 	os.makedirs(outFileDirectory)
 
@@ -56,9 +57,9 @@ staggerLength = args.stagger
 minPhred = args.minPhred
 
 #Move to sample directory 
-os.chdir(os.path.join(experimentDirectory, "raw", args.sampleName))
+os.chdir(args.sampleName)
 
-print "Parsing sample {}".format(args.sampleName)
+print "Parsing sample {}".format(args.outFilePrefix)
 inFileNames = glob.glob("*fastq*")
 if args.check_vector == "both":
 	barcode_dict, missingBeforeBarcode, missingAfterBarcode, badQscore, badLength = parseBarcodeFastQ_both(inFileNames, args.stagger, minPhred)
@@ -97,4 +98,3 @@ if args.includeReads:
 	writeOutFileBarcodeReadCounts(barcode_counts_dict, outFileReadCounts)
 else:
 	writeOutFileBarcodeCounts(barcode_counts_dict, outFileCounts)
-    

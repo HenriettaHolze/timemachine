@@ -16,9 +16,9 @@ args = parser.parse_args()
 
 #Create file extension
 if args.countType == "Reads":
-	countFileExtension = "counts"
+	countFileExtension = "readCountsOnly"
 elif args.countType == "UMIs":
-	countFileExtension = "UMIs"
+	countFileExtension = "UMICountsOnly"
 
 if args.check_vector == "before":
 	countFileExtension += "_liberal"
@@ -28,7 +28,7 @@ experimentDirectory = os.getcwd()
 samplePath = os.path.join(experimentDirectory, args.sampleName, "extractedBarcodeData/{}_{}.gz".format(args.sampleName, countFileExtension))
 
 if os.path.isfile(samplePath):
-	unzipCommand = ['gzip', '-d', samplePath]
+	unzipCommand = ['gzip', '-f', '-d', samplePath]
 	subprocess.call(unzipCommand)
         # remove .gz file ending after unzipping
 	samplePath = samplePath[:-3]
